@@ -20,7 +20,7 @@ jobs:
         node-version: '20'
     - run: npm ci
     - run: npm run lint
-      continue-on-error: true # Allow lint warnings for starter
+      continue-on-error: true #  Allow lint warnings for starter
     - run: npm test
 
   frontend:
