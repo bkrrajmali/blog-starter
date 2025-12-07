@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../utils/prisma';
 
+interface AuthRequest extends Request {
+    user?: {
+        userId: number;
+    };
+}
+
 const createPostSchema = z.object({
     title: z.string().min(1),
     body: z.string().min(1),
@@ -36,7 +42,7 @@ export const getPost = async (req: Request, res: Response) => {
 export const createPost = async (req: Request, res: Response) => {
     try {
         const { title, body } = createPostSchema.parse(req.body);
-        const userId = req.user!.userId;
+        const userId = (req as AuthRequest).user!.userId;
 
         const post = await prisma.post.create({
             data: {
@@ -60,7 +66,7 @@ export const updatePost = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { title, body } = updatePostSchema.parse(req.body);
-        const userId = req.user!.userId;
+        const userId = (req as AuthRequest).user!.userId;
 
         const post = await prisma.post.findUnique({ where: { id: Number(id) } });
 
@@ -89,7 +95,7 @@ export const updatePost = async (req: Request, res: Response) => {
 
 export const deletePost = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const userId = req.user!.userId;
+    const userId = (req as AuthRequest).user!.userId;
 
     const post = await prisma.post.findUnique({ where: { id: Number(id) } });
 

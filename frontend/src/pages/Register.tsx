@@ -16,8 +16,8 @@ const Register = () => {
             const { data } = await client.post('/auth/register', { name, email, password });
             login(data.token);
             navigate('/');
-        } catch (error) {
-            alert('Registration failed');
+        } catch (error: any) {
+            alert(error.response?.data?.message || 'Registration failed: ' + error.message);
         }
     };
 

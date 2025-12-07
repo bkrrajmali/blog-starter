@@ -39,13 +39,28 @@ graph TD
     - Backend at [http://localhost:4000](http://localhost:4000)
     - Database (Postgres)
 
-4.  **Seed Database**
-    To create initial users and posts:
+4.  **Initialize & Seed Database**
+    First, push the schema to the database:
+    ```bash
+    docker-compose exec backend npx prisma db push
+    ```
+
+    Then, seed with initial users and posts:
     ```bash
     docker-compose exec backend npm run seed
     # Or using Makefile
     make seed
     ```
+
+## Troubleshooting
+
+### Windows & Google Drive
+If you are running this project from a Google Drive folder (`G:\...`) on Windows, Docker volumes may fail to mount properly, causing "File not found" errors.
+
+**Solution**:
+1.  The `docker-compose.yml` has been updated to disable volume mounting by default to support this environment.
+2.  **Note**: This means "Hot Reloading" (instant code updates) is disabled. You must re-run `docker-compose up --build` to see code changes.
+3.  For the best development experience (with Hot Reload), move the project to a local drive (e.g., `C:\Work\blog-starter`) and uncomment the `volumes` sections in `docker-compose.yml`.
 
 5.  **Access Data**
     - Login with: `alice@example.com` / `password123`

@@ -15,8 +15,8 @@ const Login = () => {
             const { data } = await client.post('/auth/login', { email, password });
             login(data.token);
             navigate('/');
-        } catch (error) {
-            alert('Login failed');
+        } catch (error: any) {
+            alert(error.response?.data?.message || 'Login failed: ' + error.message);
         }
     };
 
